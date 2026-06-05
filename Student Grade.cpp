@@ -12,11 +12,6 @@ double score[MAX];
 string student_name[MAX];
 int countStudent = 0;
 
-// ─────────────────────────────────────────────
-//  UTILITIES
-// ─────────────────────────────────────────────
-
-// Assign letter grade based on score
 string getGrade(double s)
 {
     if (s >= 90)
@@ -38,14 +33,14 @@ string getGrade(double s)
     return "F";
 }
 
-// Clear bad cin state and discard leftover input
+
 void clearInput()
 {
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-// Read a validated score in [0, 100]
+
 double readScore()
 {
     double s;
@@ -65,7 +60,6 @@ double readScore()
     }
 }
 
-// Read a non-empty name (no spaces — use getline variant below for full names)
 string readName(const string &prompt)
 {
     string name;
@@ -80,11 +74,7 @@ string readName(const string &prompt)
     }
 }
 
-// ─────────────────────────────────────────────
-//  FILE HANDLING
-// ─────────────────────────────────────────────
-
-// Save all students to binary file
+ 
 void saveToFile()
 {
     ofstream ofs(DATA_FILE, ios::binary | ios::trunc);
@@ -104,13 +94,12 @@ void saveToFile()
     ofs.close();
     cout << "  Data saved to '" << DATA_FILE << "'.\n";
 }
-
-// Load students from binary file at startup
+ 
 void loadFromFile()
 {
     ifstream ifs(DATA_FILE, ios::binary);
     if (!ifs)
-        return; // first run — no file yet
+        return; 
 
     ifs.read(reinterpret_cast<char *>(&countStudent), sizeof(countStudent));
     if (countStudent < 0 || countStudent > MAX)
@@ -137,7 +126,7 @@ void loadFromFile()
     cout << "  Loaded " << countStudent << " student(s) from '" << DATA_FILE << "'.\n";
 }
 
-// Export a human-readable report to a text file
+ 
 void exportReport()
 {
     if (countStudent == 0)
@@ -182,9 +171,7 @@ void exportReport()
     cout << "  Report exported to '" << filename << "'.\n";
 }
 
-// ─────────────────────────────────────────────
-//  CORE FEATURES
-// ─────────────────────────────────────────────
+ 
 
 bool studentExists(const string &name)
 {
@@ -194,7 +181,7 @@ bool studentExists(const string &name)
     return false;
 }
 
-// Find index by name (-1 if not found)
+ 
 int findStudent(const string &name)
 {
     for (int i = 0; i < countStudent; i++)
@@ -305,7 +292,7 @@ void lowestScore()
          << " (" << getGrade(score[idx]) << ")\n";
 }
 
-// Search by name
+ 
 void searchStudent()
 {
     string name = readName("  Enter name to search: ");
@@ -322,7 +309,7 @@ void searchStudent()
     }
 }
 
-// Update score for existing student
+ 
 void updateStudent()
 {
     string name = readName("  Enter name to update: ");
@@ -339,7 +326,7 @@ void updateStudent()
     saveToFile();
 }
 
-// Delete a student
+ 
 void deleteStudent()
 {
     string name = readName("  Enter name to delete: ");
@@ -349,7 +336,7 @@ void deleteStudent()
         cout << "  Student '" << name << "' not found.\n";
         return;
     }
-    // Shift left
+     
     for (int i = idx; i < countStudent - 1; i++)
     {
         student_name[i] = student_name[i + 1];
@@ -360,9 +347,7 @@ void deleteStudent()
     saveToFile();
 }
 
-// ─────────────────────────────────────────────
-//  MAIN
-// ─────────────────────────────────────────────
+ 
 int main()
 {
     loadFromFile();
